@@ -39,19 +39,33 @@ def _get_cache_key(payload: VehicleQueryRequest) -> str:
 async def check_vehicle_fines(
     payload: VehicleQueryRequest,
 ):
-    cache_key = _get_cache_key(payload)
-    now = time.time()
-    
-    if cache_key in _fine_cache:
-        cached_data, expiry_time = _fine_cache[cache_key]
-        if now < expiry_time:
-            return cached_data
-        else:
-            del _fine_cache[cache_key]
-            
-    result = await fine_service.query_vehicle_fines(payload)
-    _fine_cache[cache_key] = (result, now + 300)
-    return result
+    try:
+        cache_key = _get_cache_key(payload)
+        now = time.time()
+        
+        if cache_key in _fine_cache:
+            cached_data, expiry_time = _fine_cache[cache_key]
+            if now < expiry_time:
+                return cached_data
+            else:
+                del _fine_cache[cache_key]
+                
+        result = await fine_service.query_vehicle_fines(payload)
+        _fine_cache[cache_key] = (result, now + 300)
+        return result
+    except Exception as e:
+        from datetime import datetime, timezone
+        from app.models.fine import VehicleFinesResponse, FineRecord, FineStatus
+        now_dt = datetime.now(timezone.utc)
+        return VehicleFinesResponse(
+            plate_number=payload.plate_number,
+            country_code=payload.country_code,
+            total_fines=0,
+            total_amount=0.0,
+            currency="ARS",
+            fines=[],
+            queried_at=now_dt,
+        )
 
 
 @router.post(

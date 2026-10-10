@@ -1,19 +1,16 @@
-# Core Web Framework and Server
-fastapi>=0.115.0,<1.0.0
-uvicorn[standard]>=0.32.0,<1.0.0
-
-# Data Validation and Configuration Management
-pydantic>=2.9.0,<3.0.0
-pydantic-settings>=2.5.0,<3.0.0
-python-dotenv>=1.0.1,<2.0.0
-
-# Secure HTTP Client for Fine Monitoring & Registries
-httpx>=0.27.2,<1.0.0
-
-# Cryptography & Security
-passlib[bcrypt]>=1.7.4,<2.0.0
-python-jose[cryptography]>=3.3.0,<4.0.0
-
-# Testing and Quality Assurance
-pytest>=8.3.3,<9.0.0
-pytest-asyncio>=0.24.0,<1.0.0
+fastapi==0.143.0
+uvicorn==0.54.0
+sqlalchemy==2.1.4
+pydantic==2.14.0
+pydantic-settings==2.15.0
+alembic==1.20.0
+psycopg2-binary==2.9.13
+python-dotenv==1.2.4
+python-jose==3.5.0
+passlib==1.7.4
+bcrypt==5.0.0
+requests==2.34.2
+openpyxl==3.1.5
+pytest==8.4.2
+pytest-asyncio==0.26.0
+httpx==0.28.1
